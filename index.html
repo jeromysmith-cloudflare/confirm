@@ -69,8 +69,32 @@
       $("caseBanner").textContent = `Case: ${caseId}`;
     }
 
+async function loadResources() {  // looking for Resources using KV
+  try {
+    const r = await fetch("/api/resources?id=" + encodeURIComponent(caseId));
+    if (!r.ok) throw new Error("Failed to load resources");
+
+    const data = await r.json(); // <-- this is already the array
+
+    const sel = $("resourceId");
+    sel.innerHTML = `<option value="">Select…</option>`;
+
+    for (const item of data) {
+      const opt = document.createElement("option");
+      opt.value = item.id;
+      opt.textContent = item.label;
+      sel.appendChild(opt);
+    }
+  } catch (e) {
+    $("resourceId").innerHTML =
+      `<option value="">(Could not load resources)</option>`;
+    console.error(e);
+  }
+}
+
+    
     // Populate resources (you can hardcode, or fetch from Worker)
-    async function loadResources() {
+    async function oldloadResources() { // Old lookup using a local resource, file was too large
       try {
         const r = await fetch("/api/resources?id=" + encodeURIComponent(caseId));
         if (!r.ok) throw new Error("Failed to load resources");
@@ -130,3 +154,4 @@
   </script>
 </body>
 </html>
+
