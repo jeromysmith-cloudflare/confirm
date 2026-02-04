@@ -71,7 +71,7 @@
 
 async function donotuse_loadResources() {  // looking for Resources using KV
   try {
-    const r = await fetch("/api/resources?id=" + encodeURIComponent(caseId));
+    const r = await fetch("/api/resources?id=" + encodeURIComponent(caseId) + "&_=" + Date.now());
     if (!r.ok) throw new Error("Failed to load resources");
 
     const data = await r.json(); // <-- this is already the array
@@ -161,6 +161,7 @@ async function loadResources() {
   </script>
 </body>
 </html>
+
 
 
 
