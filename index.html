@@ -104,7 +104,11 @@ async function loadResources() {
     const sel = $("resourceId");
     sel.innerHTML = `<option value="">Select…</option>`;
 
-    for (const item of data) {
+    const list = Array.isArray(data) ? data : (data.resources || []);
+
+    for (const item of list) {
+
+    // Removing line -- for (const item of data) {
       const opt = document.createElement("option");
       opt.value = item.id;
       opt.textContent = item.label;
@@ -157,5 +161,6 @@ async function loadResources() {
   </script>
 </body>
 </html>
+
 
 
