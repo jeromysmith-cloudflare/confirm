@@ -13,6 +13,7 @@ export async function onRequestPost({ request, env }) {
     // Normalize (support both old + new client payloads)
     const normalized = {
       caseId: payload.caseId,
+      variant: payload.variant ?? "TPS",
       resourceId: payload.resourceId,
 
       // Old names preferred, fallback to new names
