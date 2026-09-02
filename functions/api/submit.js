@@ -27,13 +27,22 @@ export async function onRequestPost({ request, env }) {
       submittedAt: new Date().toISOString()
     };
 
-    // Optional: validate date/time presence
-    if (!normalized.scheduledDate || !normalized.scheduledTime) {
-      return new Response(JSON.stringify({ message: "Missing scheduledDate/scheduledTime" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
+const isAmDispatch = normalized.resourceId === "AM_DISPATCH";
+
+if (
+  !isAmDispatch &&
+  (!normalized.scheduledDate || !normalized.scheduledTime)
+) {
+  return new Response(
+    JSON.stringify({
+      message: "Date and time are required when selecting a technician."
+    }),
+    {
+      status: 400,
+      headers: { "Content-Type": "application/json" }
     }
+  );
+}
 
     // Forward to your webhook
     const resp = await fetch(env.SUBMIT_WEBHOOK_URL, {
