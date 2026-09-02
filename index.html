@@ -132,6 +132,20 @@ async function loadResources() {
 
 if (caseId) loadResources();    
 
+function updateScheduleRequirements() {
+  const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
+
+  $("date").required = !isAmDispatch;
+  $("time").required = !isAmDispatch;
+
+  $("date").disabled = isAmDispatch;
+  $("time").disabled = isAmDispatch;
+
+  if (isAmDispatch) {
+    $("date").value = "";
+    $("time").value = "";
+  }
+}    
     
     // Populate resources (you can hardcode, or fetch from Worker)
 async function donotuse2_loadResources() {
@@ -161,6 +175,14 @@ async function donotuse2_loadResources() {
   }
 }
     if (caseId) loadResources();
+
+const AM_DISPATCH_ID = "AM_DISPATCH";
+function updateScheduleRequirements() {
+const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
+$("date").required = !isAmDispatch;
+$("time").required = !isAmDispatch;
+}
+$("resourceId").addEventListener("change", updateScheduleRequirements);
 
     // Submit to Worker
     $("f").addEventListener("submit", async (ev) => {
