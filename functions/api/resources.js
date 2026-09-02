@@ -1,7 +1,7 @@
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
 
-  const allowedVariants = ["TPS", "SME"];
+  const allowedVariants = ["TPS", "SME", "SSS"];
   const requestedVariant = (url.searchParams.get("v") || "TPS").toUpperCase();
 
   const variant = allowedVariants.includes(requestedVariant)
