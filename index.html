@@ -92,9 +92,44 @@ async function donotuse_loadResources() {  // looking for Resources using KV
   }
 }
 
+
+// Populate resources from Worker
+async function loadResources() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const variant = params.get("v") || "tps";
+
+    const r = await fetch(
+      `/api/resources?id=${encodeURIComponent(caseId)}&v=${encodeURIComponent(variant)}`
+    );
+
+    if (!r.ok) throw new Error("Failed to load resources");
+
+    const data = await r.json();
+
+    const sel = $("resourceId");
+    sel.innerHTML = `<option value="">Select…</option>`;
+
+    const list = Array.isArray(data) ? data : (data.resources || []);
+
+    for (const item of list) {
+      const opt = document.createElement("option");
+      opt.value = item.id;
+      opt.textContent = item.label;
+      sel.appendChild(opt);
+    }
+  } catch (e) {
+    $("resourceId").innerHTML =
+      `<option value="">(Could not load resources)</option>`;
+    console.error(e);
+  }
+}
+
+if (caseId) loadResources();    
+
     
     // Populate resources (you can hardcode, or fetch from Worker)
-async function loadResources() {
+async function donotuse2_loadResources() {
   try {
     const r = await fetch("/api/resources?id=" + encodeURIComponent(caseId));
     if (!r.ok) throw new Error("Failed to load resources");
