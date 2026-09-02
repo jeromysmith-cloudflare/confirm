@@ -169,6 +169,9 @@ async function donotuse2_loadResources() {
         resourceId: $("resourceId").value,
         date: $("date").value,
         time: $("time").value,
+        variant: (
+    new URLSearchParams(window.location.search).get("v") || "tps"
+  ).toUpperCase(),
         notes: $("notes").value || ""
       };
 
