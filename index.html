@@ -33,16 +33,16 @@
         <option value="">Loading…</option>
       </select>
 
-      <div class="row">
-        <div>
-          <label for="date">Date</label>
-          <input id="date" name="date" type="date" required />
-        </div>
-        <div>
-          <label for="time">Time</label>
-          <input id="time" name="time" type="time" required />
-        </div>
-      </div>
+<div class="row" id="scheduleSection">
+  <div>
+    <label for="date">Date</label>
+    <input id="date" name="date" type="date" required />
+  </div>
+  <div>
+    <label for="time">Time</label>
+    <input id="time" name="time" type="time" required />
+  </div>
+</div>
 
 <div id="notesSection" hidden>
   <label for="notes">Notes (optional)</label>
@@ -177,22 +177,25 @@ async function donotuse2_loadResources() {
     if (caseId) loadResources();
 
 const AM_DISPATCH_ID = "AM_DISPATCH";
-
 function updateScheduleRequirements() {
   const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
 
-  // Date/time required for normal resources, optional for AM_DISPATCH
+  // Hide date/time for AM_DISPATCH
+  $("scheduleSection").hidden = isAmDispatch;
+
+  // Require date/time only for normal resources
   $("date").required = !isAmDispatch;
   $("time").required = !isAmDispatch;
 
-  // Notes only appears for AM_DISPATCH
+  // Show notes only for AM_DISPATCH
   $("notesSection").hidden = !isAmDispatch;
-
-  // Notes are always optional
   $("notes").required = false;
 
-  // Clear notes if user switches away from AM_DISPATCH
-  if (!isAmDispatch) {
+  // Clear values when switching modes
+  if (isAmDispatch) {
+    $("date").value = "";
+    $("time").value = "";
+  } else {
     $("notes").value = "";
   }
 }
