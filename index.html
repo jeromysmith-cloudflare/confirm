@@ -132,7 +132,7 @@ async function loadResources() {
 
 if (caseId) loadResources();    
 
-function updateScheduleRequirements() {
+function updateScheduleRequirementsOLD() {
   const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
 
   $("date").required = !isAmDispatch;
@@ -177,11 +177,26 @@ async function donotuse2_loadResources() {
     if (caseId) loadResources();
 
 const AM_DISPATCH_ID = "AM_DISPATCH";
+
 function updateScheduleRequirements() {
-const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
-$("date").required = !isAmDispatch;
-$("time").required = !isAmDispatch;
+  const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
+
+  // Date/time required for normal resources, optional for AM_DISPATCH
+  $("date").required = !isAmDispatch;
+  $("time").required = !isAmDispatch;
+
+  // Notes only appears for AM_DISPATCH
+  $("notesSection").hidden = !isAmDispatch;
+
+  // Notes are always optional
+  $("notes").required = false;
+
+  // Clear notes if user switches away from AM_DISPATCH
+  if (!isAmDispatch) {
+    $("notes").value = "";
+  }
 }
+
 $("resourceId").addEventListener("change", updateScheduleRequirements);
 
     // Submit to Worker
