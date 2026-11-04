@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
       submittedAt: new Date().toISOString()
     };
 
-//Removing and replacing with skipScheduling to allow for NWP > Accept.     
+//Removing and replacing with skipScheduling to allow for NWP > Accept.       
 //const isAmDispatch = normalized.resourceId === "AM_DISPATCH";
 //if (
 //  !isAmDispatch &&
