@@ -27,12 +27,22 @@ export async function onRequestPost({ request, env }) {
       submittedAt: new Date().toISOString()
     };
 
-const isAmDispatch = normalized.resourceId === "AM_DISPATCH";
+//Removing and replacing with skipScheduling to allow for NWP > Accept.     
+//const isAmDispatch = normalized.resourceId === "AM_DISPATCH";
+//if (
+//  !isAmDispatch &&
+//  (!normalized.scheduledDate || !normalized.scheduledTime)
+//) {
+
+const skipScheduling = ["AM_DISPATCH", "ACCEPT"].includes(
+  normalized.resourceId
+);
 
 if (
-  !isAmDispatch &&
+  !skipScheduling &&
   (!normalized.scheduledDate || !normalized.scheduledTime)
 ) {
+    
   return new Response(
     JSON.stringify({
       message: "Date and time are required when selecting a technician."
