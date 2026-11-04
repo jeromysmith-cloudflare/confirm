@@ -161,6 +161,7 @@ async function donotuse2_loadResources() {
   
 if (caseId) loadResources();
 
+/* Updating for NWP Accept 
 const AM_DISPATCH_ID = "AM_DISPATCH";
 function updateScheduleRequirements() {
   const isAmDispatch = $("resourceId").value === AM_DISPATCH_ID;
@@ -184,7 +185,38 @@ function updateScheduleRequirements() {
     $("notes").value = "";
   }
 }
+*/
 
+const NO_SCHEDULE_IDS = ["AM_DISPATCH", "ACCEPT"];
+
+function updateScheduleRequirements() {
+  const resourceId = $("resourceId").value;
+  const skipScheduling = NO_SCHEDULE_IDS.includes(resourceId);
+  const isAmDispatch = resourceId === "AM_DISPATCH";
+
+  // Hide date/time for AM_DISPATCH and ACCEPT
+  $("scheduleSection").hidden = skipScheduling;
+
+  // Require date/time only for normal resources
+  $("date").required = !skipScheduling;
+  $("time").required = !skipScheduling;
+
+  // Show notes only for AM_DISPATCH (not ACCEPT)
+  $("notesSection").hidden = !isAmDispatch;
+  $("notes").required = false;
+
+  // Clear values when switching modes
+  if (skipScheduling) {
+    $("date").value = "";
+    $("time").value = "";
+  }
+
+  if (!isAmDispatch) {
+    $("notes").value = "";
+  }
+}    
+
+    
 $("resourceId").addEventListener("change", updateScheduleRequirements);
 
     // Submit to Worker
